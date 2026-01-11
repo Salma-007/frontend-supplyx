@@ -1,0 +1,56 @@
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <!-- Chargement -->
+      <div class="text-center" *ngIf="loading">
+        <div class="spinner-border" role="status"></div>
+      </div>
+
+      <!-- Erreur -->
+      <div class="alert alert-danger" *ngIf="errorMessage">
+        {{ errorMessage }}
+      </div>
+
+      <!-- Détails du fournisseur -->
+      <div class="card" *ngIf="supplier && !loading">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h3>Détails du Fournisseur</h3>
+          <button class="btn btn-warning" (click)="editSupplier()">
+            <i class="fas fa-edit"></i> Modifier
+          </button>
+        </div>
+        <div class="card-body">
+          <div class="row mb-3">
+            <div class="col-md-4"><strong>ID:</strong></div>
+            <div class="col-md-8">{{ supplier.id }}</div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-md-4"><strong>Nom:</strong></div>
+            <div class="col-md-8">{{ supplier.name }}</div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-md-4"><strong>Contact:</strong></div>
+            <div class="col-md-8">
+              <a href="mailto:{{ supplier.contact }}">{{ supplier.contact }}</a>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-md-4"><strong>Note:</strong></div>
+            <div class="col-md-8">
+              <span class="badge bg-warning">{{ supplier.rating }}/5 ⭐</span>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-md-4"><strong>Délai de livraison:</strong></div>
+            <div class="col-md-8">{{ supplier.leadTime }} jours</div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <button class="btn btn-secondary" (click)="goBack()">
+            <i class="fas fa-arrow-left"></i> Retour à la liste
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

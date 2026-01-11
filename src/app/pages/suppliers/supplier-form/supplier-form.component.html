@@ -1,0 +1,100 @@
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header">
+          <h3>{{ isEditMode ? 'Modifier' : 'Nouveau' }} Fournisseur</h3>
+        </div>
+        <div class="card-body">
+          <!-- Messages -->
+          <div class="alert alert-success" *ngIf="successMessage">
+            {{ successMessage }}
+          </div>
+          <div class="alert alert-danger" *ngIf="errorMessage">
+            {{ errorMessage }}
+          </div>
+
+          <!-- Formulaire -->
+          <form [formGroup]="supplierForm" (ngSubmit)="onSubmit()">
+            <!-- Nom -->
+            <div class="mb-3">
+              <label for="name" class="form-label">Nom du fournisseur *</label>
+              <input
+                type="text"
+                class="form-control"
+                id="name"
+                formControlName="name"
+                [class.is-invalid]="name?.invalid && name?.touched">
+              <div class="invalid-feedback" *ngIf="name?.invalid && name?.touched">
+                <div *ngIf="name?.errors?.['required']">Le nom est obligatoire</div>
+                <div *ngIf="name?.errors?.['minlength']">Le nom doit contenir au moins 2 caractères</div>
+              </div>
+            </div>
+
+            <!-- Contact -->
+            <div class="mb-3">
+              <label for="contact" class="form-label">Email de contact *</label>
+              <input
+                type="email"
+                class="form-control"
+                id="contact"
+                formControlName="contact"
+                [class.is-invalid]="contact?.invalid && contact?.touched">
+              <div class="invalid-feedback" *ngIf="contact?.invalid && contact?.touched">
+                <div *ngIf="contact?.errors?.['required']">L'email est obligatoire</div>
+                <div *ngIf="contact?.errors?.['email']">Email invalide</div>
+              </div>
+            </div>
+
+            <!-- Note -->
+            <div class="mb-3">
+              <label for="rating" class="form-label">
+                Note (0-5) * : {{ rating?.value }}/5
+              </label>
+              <input
+                type="range"
+                class="form-range"
+                id="rating"
+                formControlName="rating"
+                min="0"
+                max="5"
+                step="0.1">
+              <div class="invalid-feedback d-block" *ngIf="rating?.invalid && rating?.touched">
+                <div *ngIf="rating?.errors?.['min']">La note minimum est 0</div>
+                <div *ngIf="rating?.errors?.['max']">La note maximum est 5</div>
+              </div>
+            </div>
+
+            <!-- Délai de livraison -->
+            <div class="mb-3">
+              <label for="leadTime" class="form-label">Délai de livraison (jours) *</label>
+              <input
+                type="number"
+                class="form-control"
+                id="leadTime"
+                formControlName="leadTime"
+                [class.is-invalid]="leadTime?.invalid && leadTime?.touched">
+              <div class="invalid-feedback" *ngIf="leadTime?.invalid && leadTime?.touched">
+                <div *ngIf="leadTime?.errors?.['required']">Le délai est obligatoire</div>
+                <div *ngIf="leadTime?.errors?.['min']">Le délai doit être positif</div>
+              </div>
+            </div>
+
+            <!-- Boutons -->
+            <div class="d-flex justify-content-between">
+              <button type="button" class="btn btn-secondary" (click)="cancel()">
+                Annuler
+              </button>
+              <button
+                type="submit"
+                class="btn btn-primary"
+                [disabled]="supplierForm.invalid">
+                {{ isEditMode ? 'Modifier' : 'Créer' }}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

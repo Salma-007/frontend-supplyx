@@ -1,6 +1,6 @@
 import { HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
-import { AuthService } from './auth/services/auth.service';
+import { AuthService } from '../../app/auth/services/auth.service';
 import { catchError, switchMap, throwError } from 'rxjs';
 
 export const refreshInterceptor: HttpInterceptorFn = (req, next) => {

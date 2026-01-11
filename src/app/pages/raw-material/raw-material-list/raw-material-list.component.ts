@@ -14,6 +14,7 @@ import { RawMaterialResponse, RawMaterialRequest } from '../../../models/raw-mat
 export class RawMaterialListComponent implements OnInit {
   materials: RawMaterialResponse[] = [];
   showForm = false;
+  editingId: number | null = null;
 
   newMaterial: RawMaterialRequest = {
     name: '',
@@ -41,14 +42,25 @@ export class RawMaterialListComponent implements OnInit {
   }
 
   onSave() {
-    this.rawMaterialService.create(this.newMaterial).subscribe({
-      next: () => {
-        this.loadMaterials(); // Rafraîchir
-        this.newMaterial = { name: '', stock: 0, stockMin: 0, unit: '', supplierIds: [] }; // Reset
-        this.showForm = false;
-      },
-      error: (err) => alert("Erreur lors de l'ajout")
-    });
+    if (this.editingId) {
+
+        this.rawMaterialService.update(this.editingId, this.newMaterial).subscribe({
+          next: () => {
+            this.loadMaterials();
+            this.resetForm();
+          },
+          error: () => alert("Erreur lors de la modification")
+        });
+      } else {
+
+        this.rawMaterialService.create(this.newMaterial).subscribe({
+          next: () => {
+            this.loadMaterials();
+            this.resetForm();
+          },
+          error: () => alert("Erreur lors de l'ajout")
+        });
+      }
   }
 
   onDelete(id: number) {
@@ -58,7 +70,21 @@ export class RawMaterialListComponent implements OnInit {
   }
 
   onEdit(material: RawMaterialResponse) {
-    // Logique pour remplir le formulaire avec les données existantes
-    alert("Modification pour " + material.name + " (À implémenter)");
+      this.showForm = true;
+      this.editingId = material.id;
+      // Remplir le formulaire avec les valeurs actuelles
+      this.newMaterial = {
+        name: material.name,
+        stock: material.stock,
+        stockMin: material.stockMin,
+        unit: material.unit,
+        supplierIds: [] // Garder vide ou mapper selon vos besoins
+      };
+  }
+
+  resetForm() {
+    this.editingId = null;
+    this.newMaterial = { name: '', stock: 0, stockMin: 0, unit: '', supplierIds: [] };
+    this.showForm = false;
   }
 }

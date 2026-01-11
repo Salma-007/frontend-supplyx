@@ -1,28 +1,41 @@
 <div class="container mt-5">
   <div class="card shadow-sm">
     <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-      <h3 class="mb-0">Gestion des Matières Premières</h3>
+      <h3 class="mb-0">
+        {{ editingId ? 'Modifier la Matière Première' : 'Gestion des Matières Premières' }}
+      </h3>
       <button class="btn btn-light btn-sm" (click)="toggleForm()">
-        {{ showForm ? 'Fermer' : '+ Ajouter un Matérial' }}
+        <span *ngIf="!showForm">+ Ajouter un Matérial</span>
+        <span *ngIf="showForm">Fermer le formulaire</span>
       </button>
     </div>
 
     <div class="card-body border-bottom bg-light" *ngIf="showForm">
       <form (ngSubmit)="onSave()" class="row g-3">
         <div class="col-md-3">
+          <label class="form-label small fw-bold">Désignation</label>
           <input type="text" class="form-control" placeholder="Nom" [(ngModel)]="newMaterial.name" name="name" required>
         </div>
         <div class="col-md-2">
+          <label class="form-label small fw-bold">Stock Actuel</label>
           <input type="number" class="form-control" placeholder="Stock" [(ngModel)]="newMaterial.stock" name="stock" required>
         </div>
         <div class="col-md-2">
+          <label class="form-label small fw-bold">Stock Minimum</label>
           <input type="number" class="form-control" placeholder="Stock Min" [(ngModel)]="newMaterial.stockMin" name="stockMin" required>
         </div>
         <div class="col-md-2">
-          <input type="text" class="form-control" placeholder="Unité (ex: kg)" [(ngModel)]="newMaterial.unit" name="unit" required>
+          <label class="form-label small fw-bold">Unité</label>
+          <input type="text" class="form-control" placeholder="ex: kg, Litre" [(ngModel)]="newMaterial.unit" name="unit" required>
         </div>
-        <div class="col-md-3">
-          <button type="submit" class="btn btn-success w-100">Enregistrer</button>
+        <div class="col-md-3 d-flex align-items-end gap-2">
+          <button type="submit" [class]="editingId ? 'btn btn-warning w-100' : 'btn btn-success w-100'">
+            {{ editingId ? 'Mettre à jour' : 'Enregistrer' }}
+          </button>
+          
+          <button type="button" *ngIf="editingId" class="btn btn-secondary" (click)="resetForm()">
+            Annuler
+          </button>
         </div>
       </form>
     </div>
@@ -40,7 +53,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let m of materials">
+            <tr *ngFor="let m of materials" [class.table-warning]="editingId === m.id">
               <td>#{{ m.id }}</td>
               <td><strong>{{ m.name }}</strong></td>
               <td>
@@ -52,12 +65,19 @@
               </td>
               <td>{{ m.unit }}</td>
               <td class="text-end">
-                <button class="btn btn-outline-primary btn-sm me-2" (click)="onEdit(m)">Modifier</button>
-                <button class="btn btn-outline-danger btn-sm" (click)="onDelete(m.id)">Supprimer</button>
+                <button class="btn btn-outline-primary btn-sm me-2" (click)="onEdit(m)">
+                  <i class="bi bi-pencil"></i> Modifier
+                </button>
+                <button class="btn btn-outline-danger btn-sm" (click)="onDelete(m.id)">
+                  <i class="bi bi-trash"></i> Supprimer
+                </button>
               </td>
             </tr>
+            
             <tr *ngIf="materials.length === 0">
-              <td colspan="5" class="text-center py-4 text-muted">Aucune donnée disponible.</td>
+              <td colspan="5" class="text-center py-4 text-muted">
+                Aucune donnée disponible.
+              </td>
             </tr>
           </tbody>
         </table>
