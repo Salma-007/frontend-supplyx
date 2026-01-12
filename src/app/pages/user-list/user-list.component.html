@@ -1,0 +1,55 @@
+<div class="container">
+  <header class="users-top-bar">
+    <h1 class="title">Utilisateurs</h1>
+    <button class="btn btn-primary" (click)="navigateToCreate()">
+      <i class="fas fa-plus"></i>
+      <span>Nouveau</span> </button>
+  </header>
+
+  <div class="search-bar">
+    <div class="input-group">
+      <i class="fas fa-search"></i>
+      <input type="text" placeholder="Rechercher par nom ou email..."
+             [ngModel]="searchTerm" (ngModelChange)="onSearchChange($event)">
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="table-wrapper">
+      <table class="table">
+        <thead>
+        <tr>
+          <th>Utilisateur</th>
+          <th>Email</th>
+          <th>Rôle</th>
+          <th class="text-right">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let u of filteredUsers">
+          <td>
+            <div class="user-cell">
+              <span class="avatar">{{ getInitials(u) }}</span>
+              <span class="user-name">{{ getFullName(u) }}</span>
+            </div>
+          </td>
+          <td class="text-muted">{{ u.email }}</td>
+          <td><app-role-badge [role]="u.role"></app-role-badge></td>
+          <td class="text-right">
+            <div class="actions">
+              <button class="btn-icon" (click)="navigateToEdit(u.id)" title="Modifier">
+                <i class="fas fa-pen"></i>
+              </button>
+              <button class="btn-icon btn-danger" (click)="deleteUser(u.id, u.email)" title="Supprimer">
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div *ngIf="loading" class="loader">Chargement...</div>
+</div>

@@ -1,0 +1,98 @@
+<div class="detail-container">
+  <!-- Loader -->
+
+
+  <!-- Erreur -->
+  <div class="alert alert-danger" *ngIf="errorMessage">
+    <i class="fas fa-exclamation-circle"></i> {{ errorMessage }}
+  </div>
+
+  <!-- Détails de l'utilisateur -->
+  <div class="detail-card" *ngIf="user && !loading">
+    <!-- Header avec avatar -->
+    <div class="detail-header">
+      <div class="user-avatar-large">
+        {{ getInitials() }}
+      </div>
+      <div class="user-info">
+        <h1 class="user-name">{{ getFullName() }}</h1>
+        <p class="user-email">
+          <i class="fas fa-envelope"></i>
+          <a [href]="'mailto:' + user.email">{{ user.email }}</a>
+        </p>
+        <div class="user-role-badge">
+          <app-role-badge [role]="user.role" size="lg"></app-role-badge>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button class="btn-action btn-edit" (click)="editUser()" title="Modifier">
+          <i class="fas fa-edit"></i>
+        </button>
+        <button class="btn-action btn-delete" (click)="deleteUser()" title="Supprimer">
+          <i class="fas fa-trash"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Corps des détails -->
+    <div class="detail-body">
+      <div class="info-section">
+        <h3 class="section-title">
+          <i class="fas fa-user"></i>
+          Informations personnelles
+        </h3>
+        <div class="info-grid">
+          <div class="info-item">
+            <span class="info-label">ID</span>
+            <span class="info-value">{{ user.id }}</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Prénom</span>
+            <span class="info-value">{{ user.firstName }}</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Nom</span>
+            <span class="info-value">{{ user.lastName }}</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Email</span>
+            <span class="info-value">
+              <a [href]="'mailto:' + user.email">{{ user.email }}</a>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-section">
+        <h3 class="section-title">
+          <i class="fas fa-shield-alt"></i>
+          Rôle et permissions
+        </h3>
+        <div class="role-details">
+          <app-role-badge [role]="user.role" size="lg" [showIcon]="true"></app-role-badge>
+          <p class="role-description">
+            Ce rôle donne accès aux fonctionnalités relatives à la gestion des approvisionnements.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer avec actions -->
+    <div class="detail-footer">
+      <button class="btn btn-back" (click)="goBack()">
+        <i class="fas fa-arrow-left"></i>
+        Retour à la liste
+      </button>
+      <div class="footer-actions">
+        <button class="btn btn-edit" (click)="editUser()">
+          <i class="fas fa-edit"></i>
+          Modifier
+        </button>
+        <button class="btn btn-delete" (click)="deleteUser()">
+          <i class="fas fa-trash"></i>
+          Supprimer
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
