@@ -1,87 +1,87 @@
-<div class="container mt-5">
-  <div class="card shadow-sm">
-    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-      <h3 class="mb-0">
-        {{ editingId ? 'Modifier la Matière Première' : 'Gestion des Matières Premières' }}
-      </h3>
-      <button class="btn btn-light btn-sm" (click)="toggleForm()">
-        <span *ngIf="!showForm">+ Ajouter un Matérial</span>
-        <span *ngIf="showForm">Fermer le formulaire</span>
-      </button>
-    </div>
+<div class="container">
+  <header class="materials-top-bar">
+    <h1 class="title">
+      <i class="fas fa-boxes"></i>
+      Matières Premières
+    </h1>
+    <button class="btn btn-primary" (click)="toggleForm()">
+      <i class="fas" [ngClass]="showForm ? 'fa-times' : 'fa-plus'"></i>
+      <span>{{ showForm ? 'Fermer' : 'Ajouter un Matériel' }}</span>
+    </button>
+  </header>
 
-    <div class="card-body border-bottom bg-light" *ngIf="showForm">
-      <form (ngSubmit)="onSave()" class="row g-3">
-        <div class="col-md-3">
-          <label class="form-label small fw-bold">Désignation</label>
-          <input type="text" class="form-control" placeholder="Nom" [(ngModel)]="newMaterial.name" name="name" required>
-        </div>
-        <div class="col-md-2">
-          <label class="form-label small fw-bold">Stock Actuel</label>
-          <input type="number" class="form-control" placeholder="Stock" [(ngModel)]="newMaterial.stock" name="stock" required>
-        </div>
-        <div class="col-md-2">
-          <label class="form-label small fw-bold">Stock Minimum</label>
-          <input type="number" class="form-control" placeholder="Stock Min" [(ngModel)]="newMaterial.stockMin" name="stockMin" required>
-        </div>
-        <div class="col-md-2">
-          <label class="form-label small fw-bold">Unité</label>
-          <input type="text" class="form-control" placeholder="ex: kg, Litre" [(ngModel)]="newMaterial.unit" name="unit" required>
-        </div>
-        <div class="col-md-3 d-flex align-items-end gap-2">
-          <button type="submit" [class]="editingId ? 'btn btn-warning w-100' : 'btn btn-success w-100'">
-            {{ editingId ? 'Mettre à jour' : 'Enregistrer' }}
-          </button>
-          
-          <button type="button" *ngIf="editingId" class="btn btn-secondary" (click)="resetForm()">
-            Annuler
-          </button>
-        </div>
-      </form>
-    </div>
-
-    <div class="card-body p-0">
-      <div class="table-responsive">
-        <table class="table table-hover mb-0">
-          <thead class="table-light">
-            <tr>
-              <th>ID</th>
-              <th>Désignation</th>
-              <th>État du Stock</th>
-              <th>Unité</th>
-              <th class="text-end">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let m of materials" [class.table-warning]="editingId === m.id">
-              <td>#{{ m.id }}</td>
-              <td><strong>{{ m.name }}</strong></td>
-              <td>
-                <span [class]="m.stock <= m.stockMin ? 'text-danger fw-bold' : 'text-success'">
-                  {{ m.stock }}
-                </span>
-                <small class="text-muted"> / min {{ m.stockMin }}</small>
-                <span *ngIf="m.stock <= m.stockMin" class="badge bg-danger ms-2">Alerte</span>
-              </td>
-              <td>{{ m.unit }}</td>
-              <td class="text-end">
-                <button class="btn btn-outline-primary btn-sm me-2" (click)="onEdit(m)">
-                  <i class="bi bi-pencil"></i> Modifier
-                </button>
-                <button class="btn btn-outline-danger btn-sm" (click)="onDelete(m.id)">
-                  <i class="bi bi-trash"></i> Supprimer
-                </button>
-              </td>
-            </tr>
-            
-            <tr *ngIf="materials.length === 0">
-              <td colspan="5" class="text-center py-4 text-muted">
-                Aucune donnée disponible.
-              </td>
-            </tr>
-          </tbody>
-        </table>
+  <div class="form-card-modern mb-4" *ngIf="showForm">
+    <h3 class="mb-3" style="font-size: 1.1rem; font-weight: 600; color: #2d3748;">
+      {{ editingId ? 'Modifier la Matière' : 'Nouveau Matériel' }}
+    </h3>
+    <form (ngSubmit)="onSave()" class="row g-3">
+      <div class="col-md-3">
+        <input type="text" class="form-control-modern" placeholder="Désignation" [(ngModel)]="newMaterial.name" name="name" required>
       </div>
+      <div class="col-md-2">
+        <input type="number" class="form-control-modern" placeholder="Stock" [(ngModel)]="newMaterial.stock" name="stock" required>
+      </div>
+      <div class="col-md-2">
+        <input type="number" class="form-control-modern" placeholder="Seuil Min" [(ngModel)]="newMaterial.stockMin" name="stockMin" required>
+      </div>
+      <div class="col-md-2">
+        <input type="text" class="form-control-modern" placeholder="Unité" [(ngModel)]="newMaterial.unit" name="unit" required>
+      </div>
+      <div class="col-md-3 d-flex gap-2">
+        <button type="submit" class="btn btn-primary flex-grow-1" style="justify-content: center;">
+          <i class="fas fa-check"></i> {{ editingId ? 'Mettre à jour' : 'Enregistrer' }}
+        </button>
+        <button type="button" *ngIf="editingId" class="btn-icon" (click)="resetForm()" style="background: #e2e8f0;">
+          <i class="fas fa-undo"></i>
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <div class="card">
+    <table class="table">
+      <thead>
+      <tr>
+        <th>ID</th>
+        <th>Désignation</th>
+        <th>État du Stock</th>
+        <th>Unité</th>
+        <th class="text-right">Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let m of materials">
+        <td><span class="order-number">#{{ m.id }}</span></td>
+        <td><span class="supplier-name">{{ m.name }}</span></td>
+        <td>
+          <div class="stock-display">
+              <span class="badge-stock" [ngClass]="m.stock <= m.stockMin ? 'danger' : 'success'">
+                {{ m.stock }}
+              </span>
+            <span style="color: #a0aec0;">/ {{ m.stockMin }}</span>
+            <i *ngIf="m.stock <= m.stockMin" class="fas fa-exclamation-triangle status-warning-icon"></i>
+          </div>
+        </td>
+        <td><span class="unit-badge">{{ m.unit }}</span></td>
+        <td class="text-right">
+          <div class="actions">
+            <button class="btn-icon btn-view" (click)="onEdit(m)"><i class="fas fa-pen"></i></button>
+            <button class="btn-icon btn-danger" (click)="onDelete(m.id)"><i class="fas fa-trash"></i></button>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="stats-card" *ngIf="materials.length > 0">
+    <div class="stat-item">
+      <i class="fas fa-layer-group"></i>
+      <span>{{ materials.length }} Matières</span>
+    </div>
+    <div class="stat-item">
+      <i class="fas fa-exclamation-circle" style="color: #e53e3e;"></i>
+      <span>Alertes: {{ getCriticalCount() }}</span>
     </div>
   </div>
 </div>

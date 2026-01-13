@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms'; 
+import { FormsModule } from '@angular/forms';
 import { RawMaterialService } from '../../../services/raw-material.service';
 import { RawMaterialResponse, RawMaterialRequest } from '../../../models/raw-material.model';
 
@@ -35,6 +35,10 @@ export class RawMaterialListComponent implements OnInit {
       next: (data) => this.materials = data,
       error: (err) => console.error('Erreur backend:', err)
     });
+  }
+
+  getCriticalCount(): number {
+    return this.materials ? this.materials.filter(m => m.stock <= m.stockMin).length : 0;
   }
 
   toggleForm() {

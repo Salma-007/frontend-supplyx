@@ -1,0 +1,139 @@
+.container {
+  padding: 2rem;
+  background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%);
+  min-height: 100vh;
+}
+
+/* ========== HEADER ========== */
+.suppliers-top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.07);
+}
+
+.title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #2d3748;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.title i {
+  color: #667eea;
+}
+
+/* ========== TABLE CARD ========== */
+.card {
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.07);
+  overflow: hidden;
+  border: none;
+}
+
+.table thead {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.table th {
+  padding: 1.2rem;
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+}
+
+.supplier-row:hover {
+  background-color: #f8fafc;
+}
+
+.supplier-name {
+  font-weight: 600;
+  color: #2d3748;
+}
+
+/* ========== BADGE EVALUATION (RATING) ========== */
+.rating-badge {
+  display: inline-flex;
+  align-items: center;
+  background: #fffaf0;
+  padding: 0.4rem 0.8rem;
+  border-radius: 8px;
+  border: 1px solid #feebc8;
+}
+
+.rating-badge .star {
+  color: #ed8936;
+  margin-right: 5px;
+}
+
+.rating-badge .score {
+  font-weight: 700;
+  color: #dd6b20;
+}
+
+.rating-badge .total {
+  color: #a0aec0;
+  font-size: 0.8rem;
+}
+
+/* ========== LEAD TIME ========== */
+.lead-time {
+  color: #4a5568;
+  font-size: 0.9rem;
+  background: #edf2f7;
+  padding: 0.3rem 0.6rem;
+  border-radius: 6px;
+}
+
+/* ========== ACTIONS & BUTTONS ========== */
+.text-right { text-align: right; }
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.btn-icon {
+  width: 34px;
+  height: 34px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.btn-view { background: #e0f2fe; color: #0369a1; }
+.btn-view:hover { background: #0369a1; color: white; }
+
+.btn-edit { background: #fef3c7; color: #92400e; }
+.btn-edit:hover { background: #92400e; color: white; }
+
+.btn-danger { background: #fee2e2; color: #b91c1c; }
+.btn-danger:hover { background: #b91c1c; color: white; }
+
+/* Loader */
+.loader-container {
+  text-align: center;
+  padding: 3rem;
+  color: #667eea;
+}
+
+.no-results {
+  padding: 3rem;
+  text-align: center;
+  color: #a0aec0;
+}
+
+.no-results i { font-size: 3rem; margin-bottom: 1rem; }
