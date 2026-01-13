@@ -1,0 +1,53 @@
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.35rem 0.75rem;
+  border-radius: 20px;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: all 0.3s ease;
+}
+
+/* Tailles */
+.badge-sm {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+}
+
+.badge-md {
+  font-size: 0.85rem;
+  padding: 0.35rem 0.75rem;
+}
+
+.badge-lg {
+  font-size: 0.95rem;
+  padding: 0.5rem 1rem;
+}
+
+/* Couleurs par statut */
+.badge-warning {
+  background: linear-gradient(135deg, #fef5e7 0%, #fff9e6 100%);
+  color: #d69e2e;
+  border: 2px solid #fbd38d;
+}
+
+.badge-info {
+  background: linear-gradient(135deg, #e6f7ff 0%, #d1f0ff 100%);
+  color: #3182ce;
+  border: 2px solid #90cdf4;
+}
+
+.badge-success {
+  background: linear-gradient(135deg, #e6ffed 0%, #d1f5db 100%);
+  color: #38a169;
+  border: 2px solid #9ae6b4;
+}
+
+.status-badge:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.status-badge i {
+  font-size: 0.9em;
+}

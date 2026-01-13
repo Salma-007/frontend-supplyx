@@ -12,5 +12,5 @@ export interface RawMaterialResponse {
   stock: number;
   stockMin: number;
   unit: string;
-  suppliers: any[]; 
+  suppliers: any[];
 }

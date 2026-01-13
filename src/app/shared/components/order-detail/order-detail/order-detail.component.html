@@ -1,0 +1,162 @@
+<div class="detail-container">
+  <!-- Erreur -->
+  <div class="alert alert-danger" *ngIf="errorMessage">
+    <i class="fas fa-exclamation-circle"></i> {{ errorMessage }}
+  </div>
+
+  <!-- Détails de la commande -->
+  <div class="detail-content" *ngIf="order && !loading">
+    <!-- Header -->
+    <div class="detail-header">
+      <div class="header-left">
+        <h1 class="order-title">
+          <i class="fas fa-shopping-cart"></i>
+          Commande #{{ order.id }}
+        </h1>
+        <p class="order-date">
+          <i class="far fa-calendar-alt"></i>
+          {{ formatDate(order.orderdate) }}
+        </p>
+      </div>
+      <div class="header-right">
+        <app-status-badge [status]="order.status" size="lg"></app-status-badge>
+      </div>
+    </div>
+
+    <!-- Body -->
+    <div class="detail-body">
+      <!-- Section Informations -->
+      <div class="info-section">
+        <h3 class="section-title">
+          <i class="fas fa-info-circle"></i>
+          Informations de la Commande
+        </h3>
+        <div class="info-grid">
+          <div class="info-item">
+            <span class="info-label">N° Commande</span>
+            <span class="info-value">#{{ order.id }}</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Date de Commande</span>
+            <span class="info-value">{{ formatDate(order.orderdate) }}</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Fournisseur</span>
+            <span class="info-value">
+              <i class="fas fa-truck"></i>
+              {{ supplierName }}
+            </span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Statut</span>
+            <span class="info-value">
+              <app-status-badge [status]="order.status" size="md"></app-status-badge>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section Articles -->
+      <div class="items-section">
+        <h3 class="section-title">
+          <i class="fas fa-boxes"></i>
+          Articles Commandés
+          <span class="badge">{{ order.orderItems.length }}</span>
+        </h3>
+
+        <div class="items-table-wrapper">
+          <table class="items-table">
+            <thead>
+            <tr>
+              <th style="width: 50px;">#</th>
+              <th>Matière Première</th>
+              <th style="width: 150px;" class="text-center">Quantité</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let item of order.orderItems; let i = index">
+              <td class="text-center">
+                <span class="item-number">{{ i + 1 }}</span>
+              </td>
+              <td>
+                <div class="material-info">
+                  <i class="fas fa-box"></i>
+                  <span class="material-name">{{ item.materialName }}</span>
+                </div>
+              </td>
+              <td class="text-center">
+                  <span class="quantity-badge">
+                    {{ item.quantity }} unité(s)
+                  </span>
+              </td>
+            </tr>
+            </tbody>
+            <tfoot>
+            <tr class="total-row">
+              <td colspan="2" class="text-right">
+                <strong>Quantité Totale:</strong>
+              </td>
+              <td class="text-center">
+                <strong class="total-value">{{ getTotalQuantity() }} unité(s)</strong>
+              </td>
+            </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+
+      <!-- Section Actions Statut -->
+      <div class="status-section" *ngIf="canChangeStatus() && getNextStatuses().length > 0">
+        <h3 class="section-title">
+          <i class="fas fa-sync-alt"></i>
+          Changer le Statut
+        </h3>
+        <p class="status-description">
+          Sélectionnez le nouveau statut pour cette commande :
+        </p>
+        <div class="status-actions">
+          <button
+            *ngFor="let status of getNextStatuses()"
+            class="status-btn status-{{ SupplyOrderStatusUtils.getStatusColor(status) }}"
+            (click)="changeStatus(status)">
+            <i class="fas fa-{{ SupplyOrderStatusUtils.getStatusIcon(status) }}"></i>
+            {{ SupplyOrderStatusUtils.getStatusLabel(status) }}
+          </button>
+        </div>
+        <div class="status-note" *ngIf="order.status === SupplyOrderStatus.EN_COURS">
+          <i class="fas fa-info-circle"></i>
+          <span>Attention : Passer au statut "Reçue" mettra à jour automatiquement le stock des matières premières.</span>
+        </div>
+      </div>
+
+      <!-- Statut Reçue (readonly) -->
+      <div class="status-section status-locked" *ngIf="order.status === SupplyOrderStatus.RECUE">
+        <h3 class="section-title">
+          <i class="fas fa-lock"></i>
+          Statut Verrouillé
+        </h3>
+        <div class="locked-message">
+          <i class="fas fa-check-circle"></i>
+          <p>Cette commande a été reçue. Le statut ne peut plus être modifié et le stock a été mis à jour.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="detail-footer">
+      <button class="btn btn-back" (click)="goBack()">
+        <i class="fas fa-arrow-left"></i>
+        Retour à la liste
+      </button>
+      <div class="footer-actions">
+        <button
+          class="btn btn-delete"
+          (click)="deleteOrder()"
+          [disabled]="!canChangeStatus()">
+          <i class="fas fa-trash"></i>
+          Supprimer
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

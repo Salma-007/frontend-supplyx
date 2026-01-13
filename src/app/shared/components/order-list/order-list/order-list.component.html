@@ -1,0 +1,171 @@
+<div class="container">
+  <!-- Header -->
+  <header class="orders-top-bar">
+    <h1 class="title">
+      <i class="fas fa-shopping-cart"></i>
+      Commandes d'Approvisionnement
+    </h1>
+    <button class="btn btn-primary" (click)="navigateToCreate()">
+      <i class="fas fa-plus"></i>
+      <span>Nouvelle Commande</span>
+    </button>
+  </header>
+
+  <!-- Barre de recherche et filtres -->
+  <div class="search-bar">
+    <div class="input-group search-input">
+      <i class="fas fa-search"></i>
+      <input
+        type="text"
+        placeholder="Rechercher par N°, matière ou fournisseur..."
+        [ngModel]="searchTerm"
+        (ngModelChange)="onSearchChange($event)">
+    </div>
+
+    <select
+      class="filter-select"
+      [(ngModel)]="selectedStatus"
+      (change)="onStatusFilterChange()">
+      <option value="">Tous les statuts</option>
+      <option *ngFor="let status of availableStatuses" [value]="status.value">
+        {{ status.label }}
+      </option>
+    </select>
+
+    <button class="btn-reset" (click)="resetFilters()" title="Réinitialiser">
+      <i class="fas fa-redo"></i>
+    </button>
+  </div>
+
+  <!-- Message d'erreur -->
+  <div class="alert alert-danger" *ngIf="errorMessage">
+    <i class="fas fa-exclamation-circle"></i> {{ errorMessage }}
+  </div>
+
+
+  <!-- Table des commandes -->
+  <div class="card" *ngIf="!loading">
+    <div class="table-wrapper">
+      <table class="table">
+        <thead>
+        <tr>
+          <th>N° Commande</th>
+          <th>Date</th>
+          <th>Fournisseur</th>
+          <th>Articles</th>
+          <th>Quantité Totale</th>
+          <th>Statut</th>
+          <th class="text-right">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let order of filteredOrders" class="order-row">
+          <!-- N° Commande -->
+          <td>
+              <span class="order-number" (click)="navigateToDetail(order.id)">
+                #{{ order.id }}
+              </span>
+          </td>
+
+          <!-- Date -->
+          <td>
+              <span class="order-date">
+                <i class="far fa-calendar-alt"></i>
+                {{ formatDate(order.orderdate) }}
+              </span>
+          </td>
+
+          <!-- Fournisseur -->
+          <td>
+              <span class="supplier-name">
+                <i class="fas fa-truck"></i>
+                {{ order.supplierName || 'N/A' }}
+              </span>
+          </td>
+
+          <!-- Nombre d'articles -->
+          <td>
+              <span class="items-count">
+                <i class="fas fa-box"></i>
+                {{ order.totalItems }} article(s)
+              </span>
+          </td>
+
+          <!-- Quantité totale -->
+          <td>
+              <span class="total-quantity">
+                {{ order.totalQuantity }} unité(s)
+              </span>
+          </td>
+
+          <!-- Statut -->
+          <td>
+            <app-status-badge [status]="order.status" size="sm"></app-status-badge>
+          </td>
+
+          <!-- Actions -->
+          <td class="text-right">
+            <div class="actions">
+              <!-- Voir détails -->
+              <button
+                class="btn-icon btn-view"
+                (click)="navigateToDetail(order.id)"
+                title="Voir détails">
+                <i class="fas fa-eye"></i>
+              </button>
+
+              <!-- Changer statut (si possible) -->
+              <div class="dropdown" *ngIf="order.canChangeStatus && getNextStatuses(order).length > 0">
+                <button
+                  class="btn-icon btn-status"
+                  title="Changer statut"
+                  [attr.data-bs-toggle]="'dropdown'">
+                  <i class="fas fa-sync-alt"></i>
+                </button>
+                <ul class="dropdown-menu">
+                  <li *ngFor="let status of getNextStatuses(order)">
+                    <a class="dropdown-item" (click)="changeStatus(order.id, status)">
+                      <i class="fas fa-{{ SupplyOrderStatusUtils.getStatusIcon(status) }}"></i>
+                      {{ SupplyOrderStatusUtils.getStatusLabel(status) }}
+                    </a>
+                  </li>
+                </ul>
+              </div>
+
+              <!-- Supprimer -->
+              <button
+                class="btn-icon btn-danger"
+                (click)="deleteOrder(order.id)"
+                title="Supprimer"
+                [disabled]="!order.canChangeStatus">
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+
+      <!-- Message si aucun résultat -->
+      <div class="no-results" *ngIf="filteredOrders.length === 0 && !loading">
+        <i class="fas fa-inbox"></i>
+        <p>Aucune commande trouvée</p>
+        <button class="btn btn-secondary" (click)="resetFilters()">
+          Réinitialiser les filtres
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Statistiques -->
+  <div class="stats-card" *ngIf="!loading && filteredOrders.length > 0">
+    <div class="stat-item">
+      <i class="fas fa-shopping-cart"></i>
+      <span>{{ filteredOrders.length }} commande(s) affichée(s)</span>
+    </div>
+    <div class="stat-item">
+      <i class="fas fa-database"></i>
+      <span>{{ orders.length }} au total</span>
+    </div>
+  </div>
+</div>

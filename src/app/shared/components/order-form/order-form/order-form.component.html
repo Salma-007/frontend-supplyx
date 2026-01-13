@@ -1,0 +1,250 @@
+<div class="form-container">
+  <!-- Loader initial -->
+  <div class="loader-overlay" *ngIf="loadingData">
+    <div class="spinner"></div>
+    <p>Chargement des données...</p>
+  </div>
+
+  <div class="form-wrapper" *ngIf="!loadingData">
+    <!-- Header -->
+    <div class="form-header">
+      <h1>
+        <i class="fas fa-cart-plus"></i>
+        Nouvelle Commande d'Approvisionnement
+      </h1>
+      <p class="subtitle">Sélectionnez un fournisseur et ajoutez les matières premières</p>
+    </div>
+
+    <!-- Messages -->
+    <div class="alert alert-success" *ngIf="successMessage">
+      <i class="fas fa-check-circle"></i> {{ successMessage }}
+    </div>
+    <div class="alert alert-danger" *ngIf="errorMessage">
+      <i class="fas fa-exclamation-circle"></i> {{ errorMessage }}
+    </div>
+
+    <!-- Formulaire -->
+    <form [formGroup]="orderForm" (ngSubmit)="onSubmit()">
+
+      <!-- Section Fournisseur -->
+      <div class="form-section">
+        <h3 class="section-title">
+          <i class="fas fa-truck"></i>
+          Fournisseur
+        </h3>
+
+        <div class="supplier-select-wrapper">
+          <select formControlName="supplierId" class="form-select">
+            <option [ngValue]="null">-- Sélectionnez un fournisseur --</option>
+            <option *ngFor="let supplier of suppliers" [ngValue]="supplier.id">
+              {{ supplier.name }}
+            </option>
+          </select>
+
+          <div class="invalid-feedback" *ngIf="hasError('supplierId', 'required')">
+            Le fournisseur est obligatoire
+          </div>
+
+          <!-- Aperçu fournisseur sélectionné -->
+          <div class="supplier-preview" *ngIf="selectedSupplier">
+            <div class="preview-card">
+              <div class="preview-icon">
+                <i class="fas fa-truck"></i>
+              </div>
+              <div class="preview-info">
+                <h4>{{ selectedSupplier.name }}</h4>
+                <p>
+                  <i class="fas fa-star text-warning"></i>
+                  {{ selectedSupplier.rating }}/5
+                  •
+                  <i class="fas fa-clock"></i>
+                  Délai: {{ selectedSupplier.leadTime }} jours
+                </p>
+                <p>
+                  <i class="fas fa-envelope"></i>
+                  {{ selectedSupplier.contact }}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section Articles -->
+      <div class="form-section">
+        <div class="section-header">
+          <h3 class="section-title">
+            <i class="fas fa-boxes"></i>
+            Articles de la Commande
+            <span class="badge">{{ getTotalItems() }}</span>
+          </h3>
+          <button
+            type="button"
+            class="btn-add-item"
+            (click)="addOrderItem()"
+            [disabled]="getAvailableMaterials().length === 0">
+            <i class="fas fa-plus"></i>
+            Ajouter un article
+          </button>
+        </div>
+
+        <!-- Message si aucun article -->
+        <div class="no-items" *ngIf="orderItems.length === 0">
+          <i class="fas fa-inbox"></i>
+          <p>Aucun article ajouté</p>
+          <button
+            type="button"
+            class="btn btn-primary"
+            (click)="addOrderItem()">
+            <i class="fas fa-plus"></i>
+            Ajouter le premier article
+          </button>
+        </div>
+
+        <!-- Pivot Table des articles -->
+        <div class="items-table-wrapper" *ngIf="orderItems.length > 0">
+          <!-- Barre de recherche -->
+          <div class="search-materials">
+            <i class="fas fa-search"></i>
+            <input
+              type="text"
+              placeholder="Rechercher une matière première..."
+              [(ngModel)]="searchMaterialTerm"
+              [ngModelOptions]="{standalone: true}"
+              (input)="filterMaterials()">
+          </div>
+
+          <table class="items-table">
+            <thead>
+            <tr>
+              <th style="width: 50px;">#</th>
+              <th style="width: 40%;">Matière Première</th>
+              <th style="width: 20%;">Stock Actuel</th>
+              <th style="width: 25%;">Quantité</th>
+              <th style="width: 15%;">Actions</th>
+            </tr>
+            </thead>
+            <tbody formArrayName="orderItems">
+            <tr *ngFor="let item of orderItems.controls; let i = index" [formGroupName]="i">
+              <!-- Numéro -->
+              <td class="text-center">
+                <span class="item-number">{{ i + 1 }}</span>
+              </td>
+
+              <!-- Matière Première -->
+              <td>
+                <select formControlName="materialId" class="form-select">
+                  <option [ngValue]="null">-- Sélectionnez --</option>
+                  <option *ngFor="let material of getAvailableMaterials()" [ngValue]="material.id">
+                    {{ material.name }}
+                  </option>
+                </select>
+                <div class="invalid-feedback" *ngIf="hasItemError(i, 'materialId', 'required')">
+                  Sélectionnez une matière
+                </div>
+              </td>
+
+              <!-- Stock actuel -->
+              <td>
+                <div class="stock-info" *ngIf="item.get('materialId')?.value">
+                    <span class="stock-value">
+                      {{ getMaterialInfo(item.get('materialId')?.value)?.stock || 0 }}
+                    </span>
+                  <span class="stock-unit">
+                      {{ getMaterialInfo(item.get('materialId')?.value)?.unit }}
+                    </span>
+
+                  <!-- Indicateur stock critique -->
+                  <span
+                    class="stock-badge stock-critical"
+                    *ngIf="getMaterialInfo(item.get('materialId')?.value)!.stock! < 10">
+                      <i class="fas fa-exclamation-triangle"></i> Critique
+                  </span>
+                </div>
+                <span class="text-muted" *ngIf="!item.get('materialId')?.value">-</span>
+              </td>
+
+              <!-- Quantité -->
+              <td>
+                <div class="quantity-input-group">
+                  <button
+                    type="button"
+                    class="qty-btn"
+                    (click)="item.get('quantity')?.setValue(Math.max(1, (item.get('quantity')?.value || 1) - 1))">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                  <input
+                    type="number"
+                    formControlName="quantity"
+                    class="quantity-input"
+                    min="1"
+                    [class.is-invalid]="hasItemError(i, 'quantity', 'min')">
+                  <button
+                    type="button"
+                    class="qty-btn"
+                    (click)="item.get('quantity')?.setValue((item.get('quantity')?.value || 1) + 1)">
+                    <i class="fas fa-plus"></i>
+                  </button>
+                </div>
+                <div class="invalid-feedback" *ngIf="hasItemError(i, 'quantity', 'min')">
+                  Min: 1
+                </div>
+              </td>
+
+              <!-- Actions -->
+              <td class="text-center">
+                <button
+                  type="button"
+                  class="btn-remove"
+                  (click)="removeOrderItem(i)"
+                  title="Supprimer">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </td>
+            </tr>
+            </tbody>
+            <tfoot>
+            <tr class="total-row">
+              <td colspan="3" class="text-right">
+                <strong>Total:</strong>
+              </td>
+              <td>
+                <strong>{{ getTotalQuantity() }} unité(s)</strong>
+              </td>
+              <td></td>
+            </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="form-actions">
+        <button type="button" class="btn btn-cancel" (click)="cancel()">
+          <i class="fas fa-times"></i>
+          Annuler
+        </button>
+
+        <div class="actions-right">
+          <button
+            type="button"
+            class="btn btn-reset"
+            (click)="resetForm()"
+            [disabled]="loading">
+            <i class="fas fa-redo"></i>
+            Réinitialiser
+          </button>
+
+          <button
+            type="submit"
+            class="btn btn-submit"
+            [disabled]="orderForm.invalid || loading || orderItems.length === 0">
+            <i class="fas fa-spinner fa-spin" *ngIf="loading"></i>
+            <i class="fas fa-save" *ngIf="!loading"></i>
+            {{ loading ? 'Création...' : 'Créer la Commande' }}
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

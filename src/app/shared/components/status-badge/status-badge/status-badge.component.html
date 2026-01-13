@@ -1,0 +1,4 @@
+<span class="status-badge" [ngClass]="badgeClass" [title]="statusInfo.description">
+  <i *ngIf="showIcon" class="fas fa-{{ statusInfo.icon }} me-1"></i>
+  <span>{{ statusInfo.label }}</span>
+</span>
