@@ -8,18 +8,14 @@ export interface DashboardStats {
   ordersRecues: number;
 }
 
-/**
- * Interface pour les données brutes de l'API
- */
+
 export interface DashboardRawData {
   suppliers: Supplier[];
   rawMaterials: RawMaterial[];
   orders: SupplyOrder[];
 }
 
-/**
- * Interface Supplier (Fournisseur)
- */
+
 export interface Supplier {
   id: number;
   name: string;
@@ -28,9 +24,7 @@ export interface Supplier {
   leadTime: number;
 }
 
-/**
- * Interface RawMaterial (Matière Première)
- */
+
 export interface RawMaterial {
   id: number;
   name: string;
@@ -39,18 +33,14 @@ export interface RawMaterial {
   unit: string;
 }
 
-/**
- * Enum pour le statut des commandes
- */
+
 export enum OrderStatus {
   EN_ATTENTE = 'EN_ATTENTE',
   EN_COURS = 'EN_COURS',
   RECUE = 'RECUE'
 }
 
-/**
- * Interface SupplyOrder (Commande d'approvisionnement)
- */
+
 export interface SupplyOrder {
   id: number;
   supplierId: number;
@@ -60,9 +50,7 @@ export interface SupplyOrder {
   actualDeliveryDate?: string;
 }
 
-/**
- * Interface pour les cartes KPI
- */
+
 export interface KpiCardData {
   title: string;
   value: number;
@@ -73,9 +61,7 @@ export interface KpiCardData {
   badgeText?: string;
 }
 
-/**
- * Interface pour les cartes de statut de commande
- */
+
 export interface OrderStatusCardData {
   label: string;
   value: number;

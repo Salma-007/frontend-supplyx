@@ -1,5 +1,159 @@
-<h2>Home</h2>
+<div class="dashboard-container">
+  <header class="dashboard-header">
+    <div class="header-content">
+      <h1 class="dashboard-title">
+        <i class="fas fa-chart-line"></i>
+        Tableau de Bord
+      </h1>
+      <p class="dashboard-subtitle">Dashboard</p>
+    </div>
+    <div class="header-actions d-flex gap-3">
 
-<p>{{ message }}</p>
+    </div>
+  </header>
 
-<button (click)="logout()">Logout</button>
+  <div class="loader-container" *ngIf="loading">
+    <div class="spinner-border"></div>
+    <p>Chargement de vos statistiques...</p>
+  </div>
+
+  <div class="alert alert-danger" *ngIf="errorMessage">
+    <i class="fas fa-exclamation-circle"></i> {{ errorMessage }}
+  </div>
+
+  <div *ngIf="!loading && !errorMessage">
+
+    <section class="kpis-section">
+      <div class="kpis-grid">
+        <div *ngFor="let card of kpiCards"
+             class="kpi-card"
+             (click)="navigateTo(card.route)"
+             [style.--kpi-gradient]="card.gradient">
+          <div class="kpi-icon">
+            <i class="fas" [ngClass]="'fa-' + card.icon"></i>
+          </div>
+          <div class="kpi-content">
+            <h2 class="kpi-value">{{ card.value }}</h2>
+            <p class="kpi-label">{{ card.title }}</p>
+          </div>
+          <i class="fas fa-chevron-right kpi-arrow"></i>
+
+          <div class="kpi-alert" *ngIf="card.showAlert">
+            <i class="fas fa-bell"></i> ATTENTION
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="critical-stock-indicator mb-5" *ngIf="stats.criticalStockCount > 0">
+      <div class="indicator-content">
+        <i class="fas fa-exclamation-triangle"></i>
+        <div class="indicator-text">
+          <strong>Alerte de stock !</strong><br>
+          Il y a {{ stats.criticalStockCount }} matière(s) première(s) en dessous du seuil critique ({{ getCriticalStockPercentage() }}% du catalogue).
+        </div>
+      </div>
+      <button class="btn-view-critical" (click)="navigateTo('/raw-materials')">
+        Gérer les stocks
+        <i class="fas fa-arrow-right"></i>
+      </button>
+    </div>
+
+    <section class="orders-section">
+      <div class="section-header">
+        <h2 class="section-title">
+          <i class="fas fa-shopping-cart"></i>
+          Aperçu des Commandes
+        </h2>
+        <span class="total-badge">{{ getTotalOrders() }} Commandes au total</span>
+      </div>
+
+      <div class="orders-grid">
+        <div class="order-card order-pending" (click)="navigateTo('/orders')">
+          <div class="order-icon-wrapper">
+            <div class="order-icon"><i class="fas fa-clock"></i></div>
+          </div>
+          <div class="order-info">
+            <h3 class="order-value">{{ stats.ordersEnAttente }}</h3>
+            <p class="order-label">En Attente</p>
+            <div class="progress-bar">
+              <div class="progress-fill progress-warning" [style.width.%]="(stats.ordersEnAttente / getTotalOrders()) * 100"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="order-card order-progress" (click)="navigateTo('/orders')">
+          <div class="order-icon-wrapper">
+            <div class="order-icon"><i class="fas fa-truck-loading"></i></div>
+          </div>
+          <div class="order-info">
+            <h3 class="order-value">{{ stats.ordersEnCours }}</h3>
+            <p class="order-label">En Cours d'Expédition</p>
+            <div class="progress-bar">
+              <div class="progress-fill progress-info" [style.width.%]="(stats.ordersEnCours / getTotalOrders()) * 100"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="order-card order-completed" (click)="navigateTo('/orders')">
+          <div class="order-icon-wrapper">
+            <div class="order-icon"><i class="fas fa-check-circle"></i></div>
+          </div>
+          <div class="order-info">
+            <h3 class="order-value">{{ stats.ordersRecues }}</h3>
+            <p class="order-label">Livrées & Reçues</p>
+            <div class="progress-bar">
+              <div class="progress-fill progress-success" [style.width.%]="(stats.ordersRecues / getTotalOrders()) * 100"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="quick-actions-section">
+      <h2 class="section-title">
+        <i class="fas fa-bolt"></i>
+        Actions Rapides
+      </h2>
+      <div class="actions-grid">
+        <button class="action-btn action-primary" (click)="navigateTo('/orders/new')">
+          <i class="fas fa-plus-circle"></i>
+          <div class="action-text">
+            <span class="action-title">Nouvelle Commande</span>
+            <span class="action-subtitle">Approvisionner le stock</span>
+          </div>
+        </button>
+
+        <button class="action-btn action-success" (click)="navigateTo('/suppliers')">
+          <i class="fas fa-user-plus"></i>
+          <div class="action-text">
+            <span class="action-title">Ajouter Fournisseur</span>
+            <span class="action-subtitle">Nouveau partenaire</span>
+          </div>
+        </button>
+
+        <button class="action-btn action-info" (click)="navigateTo('/materials')">
+          <i class="fas fa-layer-group"></i>
+          <div class="action-text">
+            <span class="action-title">Inventaire</span>
+            <span class="action-subtitle">Voir tout le matériel</span>
+          </div>
+        </button>
+      </div>
+    </section>
+
+    <section class="summary-section">
+      <div class="summary-card">
+        <i class="fas fa-info-circle"></i>
+        <div class="summary-content">
+          <h4>Résumé du Système</h4>
+          <p>
+            Actuellement, vous gérez <strong>{{ stats.totalSuppliers }} fournisseurs</strong> actifs
+            et <strong>{{ stats.totalRawMaterials }} références</strong> de matières premières.
+            Le système a enregistré <strong>{{ stats.ordersRecues }} livraisons réussies</strong> à ce jour.
+          </p>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
