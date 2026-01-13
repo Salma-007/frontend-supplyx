@@ -1,6 +1,8 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow">
+<nav class="navbar navbar-expand-lg navbar-dark shadow">
   <div class="container-fluid">
-    <a class="navbar-brand fw-bold" routerLink="/dashboard">SupplyChainX</a>
+    <a class="navbar-brand fw-bold" routerLink="/dashboard">
+      <i class="fas fa-cube me-2"></i>SupplyChainX
+    </a>
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
       <span class="navbar-toggler-icon"></span>
@@ -10,35 +12,38 @@
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item" *ngIf="isLoggedIn()">
           <a class="nav-link" routerLink="/home" routerLinkActive="active">
-            <i class="fas fa-bars"></i> Tableau de bord</a>
+            <i class="fas fa-th-large"></i> Tableau de bord
+          </a>
         </li>
         <li class="nav-item" *ngIf="isLoggedIn()">
           <a class="nav-link" routerLink="/materials" routerLinkActive="active">
-            <i class="fas fa-cog"></i> Matières Premières
+            <i class="fas fa-boxes"></i> Matières Premières
           </a>
         </li>
         <li class="nav-item">
           <a class="nav-link" routerLink="/suppliers" routerLinkActive="active">
-            <i class="fas fa-truck"></i> Fournisseurs
+            <i class="fas fa-handshake"></i> Fournisseurs
           </a>
         </li>
         <li class="nav-item">
           <a class="nav-link" routerLink="/users" routerLinkActive="active">
-            <i class="fas fa-user"></i> Users
+            <i class="fas fa-users-cog"></i> Utilisateurs
           </a>
         </li>
         <li class="nav-item">
           <a class="nav-link" routerLink="/orders" routerLinkActive="active">
-            <i class="fas fa-ellipsis"></i> Supply Orders
+            <i class="fas fa-file-invoice-dollar"></i> Commandes
           </a>
         </li>
       </ul>
 
-      <div class="d-flex">
-        <button *ngIf="isLoggedIn()" class="btn btn-outline-light btn-sm" (click)="onLogout()">
-          Déconnexion
+      <div class="d-flex align-items-center gap-3">
+        <button *ngIf="isLoggedIn()" class="btn btn-logout btn-sm" (click)="onLogout()">
+          <i class="fas fa-sign-out-alt me-1"></i> Déconnexion
         </button>
-        <a *ngIf="!isLoggedIn()" class="btn btn-primary btn-sm" routerLink="/login">Connexion</a>
+        <a *ngIf="!isLoggedIn()" class="btn btn-login btn-sm" routerLink="/login">
+          <i class="fas fa-sign-in-alt me-1"></i> Connexion
+        </a>
       </div>
     </div>
   </div>
