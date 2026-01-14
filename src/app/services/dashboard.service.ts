@@ -20,7 +20,7 @@ export class DashboardService {
     return forkJoin({
       suppliers: this.supplierService.getAllSuppliers(),
       rawMaterials: this.rawMaterialService.getAll(),
-      orders: this.supplyOrderService.getAllOrders()
+      orders: this.supplyOrderService.getAllOrders(),
     }).pipe(
       map(({ suppliers, rawMaterials, orders }) => ({
         totalSuppliers: suppliers.length,

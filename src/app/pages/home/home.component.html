@@ -50,7 +50,7 @@
         <i class="fas fa-exclamation-triangle"></i>
         <div class="indicator-text">
           <strong>Alerte de stock !</strong><br>
-          Il y a {{ stats.criticalStockCount }} matière(s) première(s) en dessous du seuil critique ({{ getCriticalStockPercentage() }}% du catalogue).
+          Il y a {{ stats.criticalStockCount }} matière(s) première(s) en dessous du seuil critique ({{ stats.criticalStockCount }}% du catalogue).
         </div>
       </div>
       <button class="btn-view-critical" (click)="navigateTo('/raw-materials')">
@@ -65,7 +65,7 @@
           <i class="fas fa-shopping-cart"></i>
           Aperçu des Commandes
         </h2>
-        <span class="total-badge">{{ getTotalOrders() }} Commandes au total</span>
+        <span class="total-badge">{{ stats.ordersEnAttente+stats.ordersEnCours+stats.ordersRecues }} Commandes au total</span>
       </div>
 
       <div class="orders-grid">
@@ -77,7 +77,7 @@
             <h3 class="order-value">{{ stats.ordersEnAttente }}</h3>
             <p class="order-label">En Attente</p>
             <div class="progress-bar">
-              <div class="progress-fill progress-warning" [style.width.%]="(stats.ordersEnAttente / getTotalOrders()) * 100"></div>
+              <div class="progress-fill progress-warning" [style.width.%]="(stats.ordersEnAttente / (stats.ordersEnAttente+stats.ordersEnCours+stats.ordersRecues) * 100)"></div>
             </div>
           </div>
         </div>
@@ -90,7 +90,7 @@
             <h3 class="order-value">{{ stats.ordersEnCours }}</h3>
             <p class="order-label">En Cours d'Expédition</p>
             <div class="progress-bar">
-              <div class="progress-fill progress-info" [style.width.%]="(stats.ordersEnCours / getTotalOrders()) * 100"></div>
+              <div class="progress-fill progress-info" [style.width.%]="(stats.ordersEnCours / (stats.ordersEnAttente+stats.ordersEnCours+stats.ordersRecues)) * 100"></div>
             </div>
           </div>
         </div>
@@ -103,7 +103,7 @@
             <h3 class="order-value">{{ stats.ordersRecues }}</h3>
             <p class="order-label">Livrées & Reçues</p>
             <div class="progress-bar">
-              <div class="progress-fill progress-success" [style.width.%]="(stats.ordersRecues / getTotalOrders()) * 100"></div>
+              <div class="progress-fill progress-success" [style.width.%]="(stats.ordersRecues / (stats.ordersEnAttente+stats.ordersEnCours+stats.ordersRecues)) * 100"></div>
             </div>
           </div>
         </div>

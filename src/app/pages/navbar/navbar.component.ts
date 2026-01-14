@@ -12,9 +12,14 @@ import { AuthService } from '../../auth/services/auth.service';
 })
 export class NavbarComponent {
   constructor(private authService: AuthService, private router: Router) {}
+  isMobileMenuOpen = false;
 
   isLoggedIn(): boolean {
     return !!this.authService.getAccessToken();
+  }
+
+  toggleMobileMenu(): void {
+    this.isMobileMenuOpen = !this.isMobileMenuOpen;
   }
 
   onLogout() {

@@ -7,7 +7,6 @@ import {KpiCard} from '../../models/kpi-card.module';
 import {DashboardService} from '../../services/dashboard.service';
 
 
-
 @Component({
   selector: 'app-home',
   standalone: true,
