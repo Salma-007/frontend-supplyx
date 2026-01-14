@@ -1,0 +1,61 @@
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="text-white"><i class="fas fa-tasks me-2 text-primary"></i>Ordres de Production</h2>
+    <button class="btn btn-login" routerLink="/production-orders/new">
+      <i class="fas fa-plus me-2"></i>Lancer une Production
+    </button>
+  </div>
+
+  <div class="card shadow border-0">
+    <div class="table-responsive">
+      <table class="table table-dark table-hover mb-0">
+        <thead>
+        <tr>
+          <th>Produit</th>
+          <th>Quantité</th>
+          <th>Période</th>
+          <th>Statut</th>
+          <th class="text-end">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let order of orders">
+          <td class="fw-bold">{{ order.productName }}</td>
+          <td><span class="text-info">{{ order.quantity }}</span> unités</td>
+          <td>
+            <small class="text-white">Du {{ order.startDate | date:'dd/MM' }} au {{ order.endDate | date:'dd/MM/yyyy' }}</small>
+          </td>
+          <td>
+              <span class="badge" [ngClass]="getStatusClass(order.status)">
+                {{ order.status }}
+              </span>
+          </td>
+          <td class="text-end">
+            <button *ngIf="order.status === 'EN_ATTENTE'"
+                    class="btn btn-sm btn-outline-warning me-2"
+                    (click)="onBlock(order.id)" title="Bloquer">
+              <i class="fas fa-ban"></i>
+            </button>
+
+            <button *ngIf="order.status === 'EN_ATTENTE' || order.status === 'BLOQUE'"
+                    class="btn btn-sm btn-outline-success me-2"
+                    (click)="changeStatus(order.id, 'EN_PRODUCTION')" title="Démarrer Production">
+              <i class="fas fa-play"></i>
+            </button>
+
+            <button *ngIf="order.status === 'EN_PRODUCTION'"
+                    class="btn btn-sm btn-outline-primary me-2"
+                    (click)="changeStatus(order.id, 'TERMINE')" title="Terminer">
+              <i class="fas fa-check-double"></i>
+            </button>
+
+            <button class="btn btn-sm btn-outline-danger" (click)="onDelete(order.id)">
+              <i class="fas fa-trash"></i>
+            </button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

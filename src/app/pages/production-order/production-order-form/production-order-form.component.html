@@ -1,0 +1,43 @@
+<div class="container py-4">
+  <div class="card bg-dark text-white shadow-lg border-0">
+    <div class="card-header border-bottom border-primary p-4">
+      <h3 class="mb-0"><i class="fas fa-industry me-2 text-primary"></i>
+        {{ isEditMode ? 'Modifier l\'Ordre' : 'Lancer une Production' }}
+      </h3>
+    </div>
+    <div class="card-body p-4">
+      <form [formGroup]="orderForm" (ngSubmit)="onSubmit()">
+        <div class="row g-3">
+          <div class="col-md-12">
+            <label class="form-label text-muted">Produit à fabriquer</label>
+            <select formControlName="productId" class="form-select bg-secondary text-white border-0">
+              <option value="" disabled>Choisir un produit...</option>
+              <option *ngFor="let p of products" [value]="p.id">{{ p.name }} (Stock actuel: {{ p.stock }})</option>
+            </select>
+          </div>
+
+          <div class="col-md-4">
+            <label class="form-label text-muted">Quantité</label>
+            <input type="number" formControlName="quantity" class="form-control bg-secondary text-white border-0">
+          </div>
+
+          <div class="col-md-4">
+            <label class="form-label text-muted">Date de Début</label>
+            <input type="date" formControlName="startDate" class="form-control bg-secondary text-white border-0">
+          </div>
+
+          <div class="col-md-4">
+            <label class="form-label text-muted">Date de Fin (Estimée)</label>
+            <input type="date" formControlName="endDate" class="form-control bg-secondary text-white border-0">
+          </div>
+
+          <div class="col-12 mt-4">
+            <button type="submit" class="btn btn-login w-100 py-2 fw-bold" [disabled]="orderForm.invalid">
+              <i class="fas fa-check me-2"></i> CONFIRMER L'ORDRE
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

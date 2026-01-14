@@ -1,0 +1,116 @@
+/* Style Général du Container */
+.container {
+  background-color: #1a202c; /* Fond sombre pro */
+  padding: 2rem;
+  border-radius: 15px;
+}
+
+/* Titre et Bouton Principal */
+h2.text-white {
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.btn-login {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  font-weight: 600;
+}
+
+.btn-login:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+  color: white;
+}
+
+/* Carte et Table */
+.card {
+  background-color: #2d3748 !important;
+  border-radius: 12px;
+  overflow: hidden; /* Pour que les coins de la table suivent la carte */
+}
+
+.table {
+  color: #e2e8f0 !important;
+  vertical-align: middle;
+}
+
+.table thead th {
+  background-color: #232a3b;
+  color: #a0aec0;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 1px;
+  padding: 1.2rem;
+  border-bottom: 2px solid #4a5568;
+}
+
+.table tbody tr {
+  transition: background-color 0.2s ease;
+  border-bottom: 1px solid #4a5568;
+}
+
+.table-hover tbody tr:hover {
+  background-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+.table td {
+  padding: 1rem 1.2rem;
+}
+
+/* Badges de Statut */
+.badge {
+  min-width: 120px;
+  padding: 0.7em;
+  font-size: 0.7rem;
+  font-weight: 600;
+  border-radius: 6px;
+  text-transform: uppercase;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+/* --- Bloc de statuts corrigé --- */
+.status-attente {
+  background-color: #4a5568 !important;
+  color: #edf2f7 !important;
+}
+
+.status-production {
+  background-color: #2b6cb0 !important;
+  color: white !important;
+}
+
+.status-termine {
+  background-color: #2f855a !important;
+  color: white !important;
+}
+
+.status-bloque {
+  background-color: #c53030 !important;
+  color: white !important;
+}
+
+/* Boutons d'Action Circulaires */
+.btn-sm {
+  width: 35px;
+  height: 35px;
+  border-radius: 50% !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.btn-outline-warning { color: #f6ad55; border-color: #f6ad55; }
+.btn-outline-success { color: #68d391; border-color: #68d391; }
+.btn-outline-primary { color: #63b3ed; border-color: #63b3ed; }
+.btn-outline-danger { color: #fc8181; border-color: #fc8181; }
+
+.btn-sm:hover {
+  transform: scale(1.1);
+  color: white !important;
+}

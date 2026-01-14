@@ -1,0 +1,93 @@
+/* Container et Titre */
+.container {
+  padding-top: 2rem;
+  animation: fadeIn 0.5s ease-out;
+}
+
+h2 {
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+/* Barre de Recherche */
+.input-group-text {
+  border-radius: 12px 0 0 12px;
+  color: #667eea;
+}
+
+.form-control {
+  border-radius: 0 12px 12px 0;
+  padding: 0.75rem 1rem;
+  font-size: 0.95rem;
+}
+
+/* Carte et Table */
+.card {
+  background: #2d3748;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.table {
+  margin-bottom: 0;
+}
+
+.table thead th {
+  background: rgba(0, 0, 0, 0.2);
+  color: #a0aec0;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 1.2rem;
+  border-bottom: 2px solid #667eea;
+}
+
+.table tbody td {
+  padding: 1.2rem;
+  vertical-align: middle;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.table-hover tbody tr:hover {
+  background: rgba(102, 126, 234, 0.05);
+  transition: all 0.3s ease;
+}
+
+/* Badges de Stock */
+.badge {
+  font-weight: 600;
+  padding: 0.5rem 0.8rem;
+  border-radius: 8px;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+}
+
+.bg-success { background-color: #38a169 !important; }
+.bg-danger { background-color: #e53e3e !important; }
+
+/* Boutons d'Action */
+.btn-outline-info {
+  border-color: #4299e1;
+  color: #4299e1;
+}
+
+.btn-outline-info:hover {
+  background: #4299e1;
+  color: #fff;
+}
+
+.btn-outline-danger {
+  border-color: #f56565;
+  color: #f56565;
+}
+
+.btn-outline-danger:hover {
+  background: #f56565;
+  color: #fff;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}

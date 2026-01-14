@@ -1,0 +1,48 @@
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="text-white">
+      <i class="fas fa-microchip me-2 text-primary"></i>Gestion des Produits
+    </h2>
+    <button class="btn btn-login" routerLink="/products/new">
+      <i class="fas fa-plus me-2"></i>Nouveau Produit
+    </button>
+  </div>
+
+
+
+  <div class="card shadow border-0">
+    <div class="table-responsive">
+      <table class="table table-dark table-hover mb-0">
+        <thead>
+        <tr>
+          <th>Nom</th>
+          <th>Coût</th>
+          <th>Stock</th>
+          <th>Temps Prod.</th>
+          <th class="text-end">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let product of products">
+          <td class="fw-bold text-info">{{ product.name }}</td>
+          <td>{{ product.cost }} €</td>
+          <td>
+              <span class="badge" [ngClass]="product.stock < 10 ? 'bg-danger' : 'bg-success'">
+                {{ product.stock }} en stock
+              </span>
+          </td>
+          <td><i class="far fa-clock me-1"></i>{{ product.productionTime }} min</td>
+          <td class="text-end">
+            <button class="btn btn-sm btn-outline-info me-2" [routerLink]="['/products/edit', product.id]">
+              <i class="fas fa-edit"></i>
+            </button>
+            <button class="btn btn-sm btn-outline-danger" (click)="onDelete(product.id)">
+              <i class="fas fa-trash"></i>
+            </button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
