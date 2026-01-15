@@ -19,6 +19,8 @@ import {
 import {
   ProductionOrderFormComponent
 } from './pages/production-order/production-order-form/production-order-form.component';
+import {CustomerListComponent} from './pages/custumers/customer-list/customer-list.component';
+import {CustomerFormComponent} from './pages/custumers/customer-form/customer-form.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -42,5 +44,8 @@ export const routes: Routes = [
   { path: 'production-orders', component: ProductionOrderListComponent },
   { path: 'production-orders/new', component: ProductionOrderFormComponent },
   { path: 'production-orders/edit/:id', component: ProductionOrderFormComponent },
+  { path: 'customers', component: CustomerListComponent },
+  { path: 'customers/new', component: CustomerFormComponent },
+  { path: 'customers/edit/:id', component: CustomerFormComponent },
   { path: '', redirectTo: 'login', pathMatch: 'full' }
 ];

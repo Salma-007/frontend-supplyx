@@ -1,0 +1,19 @@
+<div class="container mt-4">
+  <h2>{{ isEditMode ? 'Modifier' : 'Ajouter' }} un Client</h2>
+  <form [formGroup]="customerForm" (ngSubmit)="onSubmit()">
+    <div class="mb-3">
+      <label class="form-label">Nom</label>
+      <input type="text" formControlName="name" class="form-control" [class.is-invalid]="customerForm.get('name')?.invalid && customerForm.get('name')?.touched">
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Adresse</label>
+      <input type="text" formControlName="address" class="form-control" [class.is-invalid]="customerForm.get('address')?.invalid && customerForm.get('address')?.touched">
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Ville</label>
+      <input type="text" formControlName="city" class="form-control" [class.is-invalid]="customerForm.get('city')?.invalid && customerForm.get('city')?.touched">
+    </div>
+    <button type="submit" class="btn btn-success" [disabled]="customerForm.invalid">Enregistrer</button>
+    <button type="button" class="btn btn-secondary ms-2" routerLink="/customers">Annuler</button>
+  </form>
+</div>

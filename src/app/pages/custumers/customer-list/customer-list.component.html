@@ -1,0 +1,30 @@
+<div class="container mt-4">
+  <div class="d-flex justify-content-between mb-3">
+    <h2>Liste des Clients</h2>
+    <button class="btn btn-primary" [routerLink]="['/customers/new']">Nouveau Client</button>
+  </div>
+
+  <div class="alert alert-danger" *ngIf="errorMessage">{{ errorMessage }}</div>
+
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Nom</th>
+      <th>Ville</th>
+      <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let c of customers">
+      <td>{{ c.id }}</td>
+      <td>{{ c.name }}</td>
+      <td>{{ c.city }}</td>
+      <td>
+        <button class="btn btn-sm btn-warning me-2" [routerLink]="['/customers/edit', c.id]">Modifier</button>
+        <button class="btn btn-sm btn-danger" (click)="onDelete(c.id)">Supprimer</button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
