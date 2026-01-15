@@ -1,0 +1,56 @@
+<div class="table-container">
+  <div class="header-actions">
+    <h2>Liste des Commandes</h2>
+    <button class="btn-primary" (click)="onAddOrder()">
+      <i class="fas fa-plus"></i> Nouvelle Commande
+    </button>
+
+
+</div>
+
+  <div *ngIf="errorMessage" class="alert alert-danger">
+    {{ errorMessage }}
+  </div>
+
+  <table>
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Client</th>
+      <th>Produit</th>
+      <th>Statut</th>
+      <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let order of orders">
+      <td>#{{ order.id }}</td>
+      <td>{{ order.customerName }}</td>
+      <td>{{ order.productName }} (x{{ order.quantity }})</td>
+      <td>
+          <span class="status-badge" [ngClass]="'status-' + order.status.toLowerCase()">
+            {{ order.status }}
+          </span>
+      </td>
+      <td>
+        <select class="status-select" (change)="onChangeStatus(order.id, $event)" [disabled]="order.status === 'LIVREE'">
+          <option value="">Changer...</option>
+          <option value="EN_PREPARATION">En Préparation</option>
+          <option value="EN_ROUTE">En Route</option>
+          <option value="LIVREE">Livrée</option>
+        </select>
+
+        <button *ngIf="order.status === 'EN_PREPARATION'"
+                (click)="onCancel(order.id)"
+                class="btn-icon text-danger" title="Annuler">
+          <i class="fas fa-ban"></i>
+        </button>
+      </td>
+    </tr>
+
+    <tr *ngIf="orders.length === 0">
+      <td colspan="5" style="text-align: center;">Aucune commande disponible.</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
