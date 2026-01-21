@@ -6,6 +6,8 @@ export interface DashboardStats {
   ordersEnAttente: number;
   ordersEnCours: number;
   ordersRecues: number;
+  totalCustomers: number;
+  totalSalesOrders: number;
 }
 
 

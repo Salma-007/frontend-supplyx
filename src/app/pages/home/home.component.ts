@@ -31,7 +31,7 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.dashboardService.getDashboardStats().subscribe({
       next: stats => {
-        this.stats = stats;
+        this.stats = <DashboardStats>stats;
         this.prepareKpis();
         this.loading = false;
       },
@@ -48,18 +48,34 @@ export class HomeComponent implements OnInit {
         title: 'Fournisseurs',
         value: this.stats.totalSuppliers,
         icon: 'truck',
-        color: '#667eea',
         gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-        route: '/suppliers'
+        route: '/suppliers',
+        color: ""
       },
       {
         title: 'Stocks Critiques',
         value: this.stats.criticalStockCount,
         icon: 'exclamation-triangle',
-        color: '#f56565',
         gradient: 'linear-gradient(135deg, #f56565 0%, #c53030 100%)',
         route: '/raw-materials',
-        showAlert: this.stats.criticalStockCount > 0
+        showAlert: this.stats.criticalStockCount > 0,
+        color: ""
+      },
+      {
+        title: 'Clients Actifs',
+        value: this.stats.totalCustomers || 0,
+        icon: 'users',
+        gradient: 'linear-gradient(135deg, #48bb78 0%, #38a169 100%)',
+        route: '/customers',
+        color: ""
+      },
+      {
+        title: 'Ventes en Cours',
+        value: this.stats.totalSalesOrders || 0,
+        icon: 'file-invoice-dollar',
+        gradient: 'linear-gradient(135deg, #4299e1 0%, #3182ce 100%)',
+        route: '/sales-orders',
+        color: ""
       }
     ];
   }
