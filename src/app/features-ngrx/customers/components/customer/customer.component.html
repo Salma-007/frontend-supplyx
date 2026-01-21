@@ -1,0 +1,57 @@
+<div class="container">
+  <h2>Gestion des Clients</h2>
+
+  <div class="card form-container">
+    <h3>{{ isEditMode ? 'Modifier' : 'Ajouter' }} un Client</h3>
+    <form (submit)="onSubmit()">
+      <div class="form-group">
+        <label>Nom</label>
+        <input type="text" [(ngModel)]="currentCustomer.name" name="name" required placeholder="Ex: Jean Dupont">
+      </div>
+      <div class="form-group">
+        <label>Adresse</label>
+        <input type="text" [(ngModel)]="currentCustomer.address" name="address" required placeholder="Ex: 123 Rue de Paris">
+      </div>
+      <div class="form-group">
+        <label>Ville</label>
+        <input type="text" [(ngModel)]="currentCustomer.city" name="city" required placeholder="Ex: Lyon">
+      </div>
+      <div class="actions">
+        <button type="submit" class="btn-primary">{{ isEditMode ? 'Mettre à jour' : 'Enregistrer' }}</button>
+        <button type="button" *ngIf="isEditMode" (click)="resetForm()" class="btn-secondary">Annuler</button>
+      </div>
+    </form>
+  </div>
+
+  <hr>
+
+  <div class="card table-container">
+    <h3>Liste des Clients</h3>
+    <table *ngIf="customers$ | async as customers; else loading">
+      <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nom</th>
+        <th>Ville</th>
+        <th>Adresse</th>
+        <th>Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let customer of customers">
+        <td>{{ customer.id }}</td>
+        <td>{{ customer.name }}</td>
+        <td>{{ customer.city }}</td>
+        <td>{{ customer.address }}</td>
+        <td>
+          <button (click)="onEdit(customer)" class="btn-edit">Modifier</button>
+          <button (click)="onDelete(customer.id)" class="btn-delete">Supprimer</button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+    <ng-template #loading>
+      <p>Chargement des clients en cours...</p>
+    </ng-template>
+  </div>
+</div>

@@ -1,11 +1,11 @@
-export interface CustomerRequest {
+export interface Customer {
+  id: number;
   name: string;
   address: string;
   city: string;
 }
 
-export interface CustomerResponse {
-  id: number;
+export interface CustomerRequest {
   name: string;
   address: string;
   city: string;

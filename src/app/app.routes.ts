@@ -19,10 +19,7 @@ import {
 import {
   ProductionOrderFormComponent
 } from './pages/production-order/production-order-form/production-order-form.component';
-import {CustomerListComponent} from './pages/custumers/customer-list/customer-list.component';
-import {CustomerFormComponent} from './pages/custumers/customer-form/customer-form.component';
-import {SalesOrderListComponent} from './pages/orders/sales-order-list/sales-order-list.component';
-import {SalesOrderFormComponent} from './pages/orders/sales-order-form/sales-order-form.component';
+
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -46,11 +43,5 @@ export const routes: Routes = [
   { path: 'production-orders', component: ProductionOrderListComponent },
   { path: 'production-orders/new', component: ProductionOrderFormComponent },
   { path: 'production-orders/edit/:id', component: ProductionOrderFormComponent },
-  { path: 'customers', component: CustomerListComponent },
-  { path: 'customers/new', component: CustomerFormComponent },
-  { path: 'customers/edit/:id', component: CustomerFormComponent },
-  { path: 'sales-orders', component: SalesOrderListComponent },
-  { path: 'sales-orders/new', component: SalesOrderFormComponent },
-  { path: 'sales-orders/edit/:id', component: SalesOrderFormComponent },
   { path: '', redirectTo: 'login', pathMatch: 'full' }
 ];
