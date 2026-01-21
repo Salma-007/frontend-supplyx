@@ -19,6 +19,7 @@ import {
 import {
   ProductionOrderFormComponent
 } from './pages/production-order/production-order-form/production-order-form.component';
+import {CustomerComponent} from './features-ngrx/customers/components/customer/customer.component';
 
 
 export const routes: Routes = [
@@ -43,5 +44,6 @@ export const routes: Routes = [
   { path: 'production-orders', component: ProductionOrderListComponent },
   { path: 'production-orders/new', component: ProductionOrderFormComponent },
   { path: 'production-orders/edit/:id', component: ProductionOrderFormComponent },
+  { path: 'customers', component: CustomerComponent },
   { path: '', redirectTo: 'login', pathMatch: 'full' }
 ];
