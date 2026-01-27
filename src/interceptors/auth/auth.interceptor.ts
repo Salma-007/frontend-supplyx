@@ -16,19 +16,17 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const isAuthRequest = req.url.includes('/api/auth/login') || req.url.includes('/api/auth/register');
   const isRefreshRequest = req.url.includes('/api/auth/refresh');
 
-  // Pour les requêtes de refresh, on ne fait pas de vérification de token
+
   if (isRefreshRequest) {
     return next(req);
   }
 
-  // Si pas de token et pas une requête d'auth, rediriger vers login
   if (!accessToken && !isAuthRequest) {
     authService.logout();
     router.navigate(['/login']);
     return EMPTY;
   }
 
-  // Ajouter le token aux requêtes non-auth
   let authReq = req;
   if (accessToken && !isAuthRequest) {
     authReq = req.clone({
@@ -53,7 +51,6 @@ const handle401Error = (request: HttpRequest<any>, next: HttpHandlerFn, authServ
 
     const refreshToken = authService.getRefreshToken();
 
-    // Si pas de refresh token, logout et redirection
     if (!refreshToken) {
       isRefreshing = false;
       authService.logout();
@@ -69,12 +66,10 @@ const handle401Error = (request: HttpRequest<any>, next: HttpHandlerFn, authServ
           authService.saveTokens(response.accessToken, response.refreshToken);
           refreshTokenSubject.next(response.accessToken);
 
-          // Rejouer la requête originale avec le nouveau token
           return next(request.clone({
             setHeaders: { Authorization: `Bearer ${response.accessToken}` }
           }));
         } else {
-          // Tokens invalides reçus
           authService.logout();
           router.navigate(['/login']);
           return EMPTY;
@@ -85,12 +80,11 @@ const handle401Error = (request: HttpRequest<any>, next: HttpHandlerFn, authServ
         refreshTokenSubject.next(null);
         authService.logout();
         router.navigate(['/login']);
-        return EMPTY; // Retourner EMPTY au lieu de throwError pour éviter les erreurs console
+        return EMPTY;
       })
     );
   }
 
-  // Si un refresh est déjà en cours, attendre le nouveau token
   return refreshTokenSubject.pipe(
     filter(token => token !== null),
     take(1),

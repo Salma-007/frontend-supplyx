@@ -52,4 +52,22 @@ export class CustomerEffects {
       )
     )
   );
+
+  updateCustomer$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(CustomerActions.updateCustomer),
+      mergeMap(({ id, customer }) =>
+        this.customerService.update(id, customer).pipe(
+          map(updatedCustomer =>
+            CustomerActions.updateCustomerSuccess({ customer: updatedCustomer })
+          ),
+          catchError(error =>
+            of(CustomerActions.loadCustomersFailure({ error: error.message }))
+          )
+        )
+      )
+    )
+  );
 }
+
+
